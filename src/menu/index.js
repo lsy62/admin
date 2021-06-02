@@ -21,8 +21,8 @@ function supplementPath (menu) {
 
 export const menuHeader = supplementPath([
   { path: '/index', title: '首页', icon: 'home' },
-  ...other,
-  member
+  // ...other,
+  // member
 ])
 
 export const menuAside = supplementPath([

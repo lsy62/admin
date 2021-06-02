@@ -3,6 +3,9 @@ import util from '@/libs/util.js'
 import router from '@/router'
 import api from '@/api'
 
+import { menuHeader, menuAside } from '@/menu'
+import { frameInRoutes } from '@/router/routes'
+
 export default {
   namespaced: true,
   actions: {
@@ -13,11 +16,28 @@ export default {
      * @param {Object} payload password {String} 密码
      * @param {Object} payload route {Object} 登录成功后定向的路由对象 任何 vue-router 支持的格式
      */
-    async login ({ dispatch }, {
+    async login ({ dispatch, commit }, {
       username = '',
       password = ''
     } = {}) {
       const res = await api.SYS_USER_LOGIN({ username, password })
+      console.log('登录返回的数据', res)
+
+      // // 设置顶栏菜单
+      commit('d2admin/menu/headerSet', [
+        ...menuHeader,
+  { path: '/equipment', title: '设备管理', icon: 'home' },
+  { path: '/agent', title: '代理管理', icon: 'home' },
+  { path: '/merchant', title: '商家管理', icon: 'home' },
+  { path: '/user', title: '用户管理', icon: 'puzzle-piece' }
+], { root: true })
+      //设置路由
+      commit('d2admin/page/init', frameInRoutes, { root: true })
+      for(let i = 0;i > frameInRoutes.length;i++){
+        router.addRoute(frameInRoutes[0])
+      }
+
+
       // 设置 cookie 一定要存 uuid 和 token 两个 cookie
       // 整个系统依赖这两个数据进行校验和存储
       // uuid 是用户身份唯一标识 用户注册的时候确定 并且不可改变 不可重复

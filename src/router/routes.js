@@ -52,7 +52,7 @@ const frameIn = [
 	  ...other,
     ]
   },
-  member
+  // member
 ]
 
 /**
